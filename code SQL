@@ -1,0 +1,153 @@
+/* LES EXEMPLES QUI SONT MONTRÉS ENSUITE ONT ÉTÉ EXTRAITS DU SITE WEB :
+www.hellofresh.fr */
+
+/* -- Tableau person*/ 
+CREATE TABLE person ( id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+                     username varchar(50), 
+                     name varchar(50),
+                     lastname varchar(50),
+                     email varchar(255), 
+                     password varchar(255), 
+                     type int NOT NULL );
+
+/* Utilisateur administrateur - mot de passe : pass */ 
+INSERT INTO person (username, email, password, type)
+                     VALUES ('admin','admin@imt.com','1a1dc91c907325c69271ddf0c944bc72',3);
+
+/* Utilisateur antoine - mot de passe : pass */ 
+INSERT INTO person (username, email, password, type)
+                     VALUES ('antoine','antoine@imt.com','1a1dc91c907325c69271ddf0c944bc72',0);
+
+/* Utilisateur camille - mot de passe : pass */ 
+INSERT INTO person (username, email, password, type)
+                     VALUES ('camille','camille@imt.com','1a1dc91c907325c69271ddf0c944bc72',0);
+
+/* Utilisateur jacques - mot de passe : pass */ 
+INSERT INTO person (username, email, password, type)
+                     VALUES ('jacques','jacques@imt.com','1a1dc91c907325c69271ddf0c944bc72',0);
+
+/* -- Tableau recette*/ 
+CREATE TABLE recette ( id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+                     titre varchar(50),
+                     iduser INT NOT NULL,
+                     FOREIGN KEY (iduser) REFERENCES person(id),
+                     date datetime,
+                     photo varchar(255),
+                     statut int
+                      );
+
+/* Recette 1 - confirmée  */
+INSERT INTO recette (titre, iduser, date, photo,statut)
+                     VALUES ('Églefin lardé',1,'2018-04-30','1.png',1);
+
+/* Recette 1 - pas confirmée */
+INSERT INTO recette (titre, iduser, date, photo,statut)
+                     VALUES ('Couscous perlé',2,'2018-08-24','2.png',0);
+
+/* -- Tableau information*/ 
+CREATE TABLE information ( idrecette INT NOT NULL,
+                     FOREIGN KEY (idrecette) REFERENCES recette(id),
+                     dureecui varchar(5),
+    				 dureerepos varchar(5),
+    				 dureeprep varchar(5),
+    				 diff int,
+                     cout int,
+                     categorie varchar(50) );
+
+/* Recette 1 */
+INSERT INTO information (idrecette, dureecui, dureerepos, dureeprep,diff, cout, categorie)
+                     VALUES (1, '00:25','00:30','00:40',4,3,'Légère');
+
+/* Recette 2 */
+INSERT INTO information (idrecette, dureecui, dureerepos, dureeprep,diff, cout, categorie)
+                     VALUES (2, '00:30','00:25','00:30',2,3,'Veggie');
+
+CREATE TABLE ingredients (idrecette INT,
+                     nom varchar(2000) );
+
+/* Recette 1 */
+INSERT INTO ingredients (idrecette, nom)
+                     VALUES (1, "400-g-pomme de terre{1-kg-lardon{1-cuillere-noix de muscade{400-g-haricots verts{500-g-filet d'églefin{80-g-sauce ravigote{2-cuillere-huile de tournesol{1-pince-poivre et sel{2-cuillere-beurre{");
+
+/* Recette 2 */
+INSERT INTO ingredients (idrecette, nom)
+                     VALUES (2, "30-g-échalote{250-g-champignons aux châtaignes{3-cuillere-citron{8-g-cerfeuil et estragon frais{170-g-semoule{100-g-ricotta{50-g-pecorino{600-ml-bouillon de légumes{2-cuillere-huile d'olive{1-cuillere-beurre{1-pince-poivre et sel");
+
+/* -- Tableau utensilles*/ 
+CREATE TABLE utensilles (idrecette INT,
+                     nom varchar(2000) );
+
+/* Recette 1*/
+INSERT INTO utensilles (idrecette, nom)
+                     VALUES (1, "Papier cuisson{Cutting Board{Four{Poêle à frire{Plaque de cuisson{Couteau à fruits{Poêle + couvercle{Râpe{");
+
+/* Recette 2 */
+INSERT INTO utensilles (idrecette, nom)
+                     VALUES (2, "Bol{Poêle à frire{Poêle + couvercle{Râpe{");
+
+
+/* -- Tableau etapes*/ 
+CREATE TABLE etapes (idrecette INT,
+    				 idordre INT,
+                     nom varchar(20000));
+
+/* Recette 1 */
+INSERT INTO etapes (idrecette, idordre,nom)
+                     VALUES (1, 1, "Préchauffez le four à 200 degrés. Épluchez ou lavez bien les pommes de terre et taillez-les en rondelles de ½ cm. Disposez-les sur la plaque recouverte de papier sulfurisé, arrosez avec l'huile de tournesol, puis salez et poivrez. Enfournez les dans le four préchauffé pour 30 à 40 minutes ou jusqu'à ce qu'elles soient dorées.");
+
+INSERT INTO etapes (idrecette, idordre,nom)
+                     VALUES (1, 2, "Équeutez les haricots verts et coupez-les en deux morceaux de taille égale. Versez un fond d'eau dans la casserole. Ajoutez-y une pincée de sel ainsi que les haricots. À couvert, portez à ébullition et laissez cuire à petit bouillon pendant 8 à 10 minutes. Égouttez et réservez sans couvercle. Si vous le souhaitez, ajoutez un petit morceau du beurre aux haricots. Salez et poivrez.");
+
+INSERT INTO etapes (idrecette, idordre,nom)
+                     VALUES (1, 3, "Pendant ce temps, disposez les tranches de lard l'une à côté de l'autre, de sorte qu'elles se chevauchent tout juste sur la longueur. Disposez l'églefin sur les tranches et enroulez-le avec le lard.");
+
+INSERT INTO etapes (idrecette, idordre,nom)
+                     VALUES (1, 4, "Faites chauffer le reste de beurre dans la poêle et faites-y cuire le poisson lardé 2 à 3 minutes de chaque côté à feu moyen-vif, ou jusqu'à ce qu'il soit cuit. Poivrez.");
+
+INSERT INTO etapes (idrecette, idordre,nom)
+                     VALUES (1, 5, "Pendant ce temps, râpez la noix de muscade à l'aide de la râpe fine. Attention : une pincée suffit.");
+
+INSERT INTO etapes (idrecette, idordre,nom)
+                     VALUES (1, 6, "Servez l'églefin lardé avec les rondelles de pommes de terre et les haricots verts. Saupoudrez les haricots de noix de muscade et accompagnez le tout de la sauce ravigote.");
+
+
+/* Recette 2 */
+INSERT INTO etapes (idrecette, idordre,nom)
+                     VALUES (2, 1, "Préparez le bouillon. Coupez les échalotes en huit quartiers dans le sens de la longueur. Nettoyez les champignons blonds avec de l'essuie-tout, puis coupez-les en tranches. Prélevez le zeste du citron à l'aide de la râpe fine et pressez le jus. Ciselez le cerfeuil et hachez grossièrement l'estragon.");
+
+INSERT INTO etapes (idrecette, idordre,nom)
+                     VALUES (2, 2, "Faites chauffer l'huile d'olive à feu moyen dans la grande poêle et faites dorer les échalotes 16 à 18 minutes pour qu'elles ramollissent bien. Ajoutez les champignons blonds et faites-les sauter durant les 5 à 7 dernières minutes. Salez et poivrez.");
+
+INSERT INTO etapes (idrecette, idordre,nom)
+                     VALUES (2, 3, "Pendant ce temps, faites chauffer la casserole à feu moyen-vif et faites revenir le couscous perlé à sec 1 minute. Ajoutez le bouillon, baissez le feu sur doux et laissez mijoter à couvert 12 minutes jusqu'à absorption totale. Égouttez, égrainez et réservez sans couvercle.");
+
+INSERT INTO etapes (idrecette, idordre,nom)
+                     VALUES (2, 4, "Pendant ce temps, dans le petit bol, mélangez la ricotta, le pecorino râpé ainsi que ¼ cc de zeste et ½ cs de jus de citron par personne. Salez et ajoutez une généreuse quantité de poivre noir.");
+
+INSERT INTO etapes (idrecette, idordre,nom)
+                     VALUES (2, 5, "Ajoutez le beurre, la moitié du cerfeuil, la moitié de la ricotta au citron et le couscous perlé à la poêle contenant les échalotes et les champignons, puis remuez bien.");
+
+INSERT INTO etapes (idrecette, idordre,nom)
+                     VALUES (2, 6, "Servez le couscous sur les assiettes et garnissez avec le reste de ricotta au citron. Parsemez du reste de cerfeuil, d'estragon et du reste de zeste de citron à votre guise. Arrosez avec le reste de jus de citron si vous le souhaitez.");
+
+/* -- Tableau comments*/ 
+CREATE TABLE comments (idrec INT NOT NULL,
+                     FOREIGN KEY (idrec) REFERENCES recette(id),
+                     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                     username varchar(50),
+                     day DATETIME,
+                     commentaire TEXT);
+
+INSERT INTO comments (idrec, username,day, commentaire)
+                     VALUES (1, 'antoine','2018-05-3 01:01:01.1234567', 'Merci pour cette recette ! Toute la famille adore !');
+
+INSERT INTO comments (idrec, username,day, commentaire)
+                     VALUES (1, 'camille','2018-05-4 01:01:01.1234567', "J'ajoute un verre de jus d'orange");
+
+INSERT INTO comments (idrec, username,day, commentaire)
+                     VALUES (1, 'jacques','2018-05-7 01:01:01.1234567', "Délicieux! J'ai servi avec des pâtes. Par rapport à certains commentaires négatifs au niveau de la cuisson, il faut souligner qu'il est bien spécifié qu'elle doit être menée à feu très doux ");
+
+INSERT INTO comments (idrec, username,day, commentaire)
+                     VALUES (2, 'camille','2018-08-25 01:01:01.1234567', "Excellente recette que j'ai réalisée pour la première fois. La prochaine fois, j'enlèverai un peu de tomates pour rajouter des quartiers d'orange et du jus d'orange.");
+
+
